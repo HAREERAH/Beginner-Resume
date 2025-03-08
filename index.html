@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Resume</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Container for the resume */
+        .resume-container {
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            position: relative;
+        }
+
+        /* Print button */
+        .print-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .print-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Header section */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 20px;
+        }
+
+        .name {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .title {
+            font-size: 18px;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Theme selector */
+        .theme-selector {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .theme-btn {
+            padding: 5px 10px;
+            margin: 0 5px;
+            background-color: #ddd;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .theme-btn.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Section styling */
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            color: #2c3e50;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+
+        /* Summary section */
+        .summary {
+            margin-bottom: 25px;
+        }
+
+        /* Experience and Education sections */
+        .experience-item, .education-item {
+            margin-bottom: 20px;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .item-title {
+            font-weight: bold;
+            font-size: 18px;
+            color: #34495e;
+        }
+
+        .item-date {
+            color: #7f8c8d;
+        }
+
+        .item-subtitle {
+            font-style: italic;
+            margin-bottom: 5px;
+            color: #34495e;
+        }
+
+        .item-description {
+            color: #5d6d7e;
+        }
+
+        /* Skills section */
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            list-style-type: none;
+        }
+
+        .skill-item {
+            background-color: #f0f0f0;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .skill-item:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Edit mode styling */
+        [contenteditable="true"] {
+            border: 1px dashed #bdc3c7;
+            padding: 2px;
+        }
+
+        [contenteditable="true"]:focus {
+            outline: none;
+            border-color: #3498db;
+            background-color: #f9f9f9;
+        }
+
+        .edit-mode-toggle {
+            display: block;
+            margin: 20px auto;
+            padding: 8px 16px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .edit-mode-toggle:hover {
+            background-color: #2980b9;
+        }
+
+        /* Theme colors */
+        .blue-theme {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #e0f7fa;
+        }
+
+        .green-theme {
+            --primary-color: #4CAF50;
+            --secondary-color: #388E3C;
+            --accent-color: #E8F5E9;
+        }
+
+        .purple-theme {
+            --primary-color: #9C27B0;
+            --secondary-color: #7B1FA2;
+            --accent-color: #F3E5F5;
+        }
+
+        /* Theme-specific styling */
+        .themed .section-title {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .themed .item-title {
+            color: var(--secondary-color);
+        }
+
+        .themed .skill-item {
+            background-color: var(--accent-color);
+        }
+
+        .themed .print-btn, 
+        .themed .edit-mode-toggle,
+        .themed .theme-btn.active {
+            background-color: var(--primary-color);
+        }
+
+        .themed .print-btn:hover, 
+        .themed .edit-mode-toggle:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Responsive design */
+        @media screen and (max-width: 600px) {
+            .resume-container {
+                margin: 20px;
+                padding: 15px;
+            }
+
+            .name {
+                font-size: 24px;
+            }
+
+            .item-header {
+                flex-direction: column;
+            }
+        }
+
+        /* Print styling */
+        @media print {
+            body {
+                background-color: white;
+            }
+
+            .resume-container {
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .print-btn, .edit-mode-toggle, .theme-selector {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="resume-container" id="resumeContainer">
+        <button class="print-btn" id="printBtn">Print Resume</button>
+        
+        <div class="theme-selector">
+            <button class="theme-btn" id="defaultTheme">Default</button>
+            <button class="theme-btn" id="blueTheme">Blue</button>
+            <button class="theme-btn" id="greenTheme">Green</button>
+            <button class="theme-btn" id="purpleTheme">Purple</button>
+        </div>
+
+        <button class="edit-mode-toggle" id="editToggle">Toggle Edit Mode</button>
+
+        <!-- Header Section -->
+        <div class="header">
+            <div class="name" contenteditable="false">Your Name</div>
+            <div class="title" contenteditable="false">Professional Title</div>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span contenteditable="false">your.email@example.com</span>
+                </div>
+                <div class="contact-item">
+                    <span contenteditable="false">(123) 456-7890</span>
+                </div>
+                <div class="contact-item">
+                    <span>📍</span>
+                    <span contenteditable="false">City, State</span>
+                </div>
+                <div class="contact-item">
+                    <span>🔗</span>
+                    <span contenteditable="false">linkedin.com/in/yourprofile</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="section summary">
+            <h2 class="section-title">Professional Summary</h2>
+            <p contenteditable="false">
+                Dedicated and motivated professional with experience in [your field]. Strong skills in [key skills] and a proven track record of [achievements]. Seeking to leverage my abilities to [your career goals].
+            </p>
+        </div>
+
+        <!-- Experience Section -->
+        <div class="section">
+            <h2 class="section-title">Work Experience</h2>
+            
+            <div class="experience-item">
+                <div class="item-header">
+                    <span class="item-title" contenteditable="false">Job Title</span>
+                    <span class="item-date" contenteditable="false">Jan 2020 - Present</span>
+                </div>
+                <div class="item-subtitle" contenteditable="false">Company Name, Location</div>
+                <ul class="item-description" contenteditable="false">
+                    <li>Accomplished [specific achievement] resulting in [positive outcome]</li>
+                    <li>Managed [responsibility] by implementing [action] which led to [result]</li>
+                    <li>Collaborated with [teams/departments] to deliver [projects/goals]</li>
+                </ul>
+            </div>
+
+            <div class="experience-item">
+                <div class="item-header">
+                    <span class="item-title" contenteditable="false">Previous Job Title</span>
+                    <span class="item-date" contenteditable="false">Jun 2017 - Dec 2019</span>
+                </div>
+                <div class="item-subtitle" contenteditable="false">Previous Company, Location</div>
+                <ul class="item-description" contenteditable="false">
+                    <li>Developed and implemented [process/system] which improved [metric] by [percentage]</li>
+                    <li>Assisted in [project/task] that resulted in [outcome]</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Education Section -->
+        <div class="section">
+            <h2 class="section-title">Education</h2>
+            
+            <div class="education-item">
+                <div class="item-header">
+                    <span class="item-title" contenteditable="false">Degree Name</span>
+                    <span class="item-date" contenteditable="false">2013 - 2017</span>
+                </div>
+                <div class="item-subtitle" contenteditable="false">University Name, Location</div>
+                <div class="item-description" contenteditable="false">
+                    <p>Relevant coursework: Course 1, Course 2, Course 3</p>
+                    <p>GPA: 3.8/4.0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="section">
+            <h2 class="section-title">Skills</h2>
+            <ul class="skills-list">
+                <li class="skill-item" contenteditable="false">Skill 1</li>
+                <li class="skill-item" contenteditable="false">Skill 2</li>
+                <li class="skill-item" contenteditable="false">Skill 3</li>
+                <li class="skill-item" contenteditable="false">Skill 4</li>
+                <li class="skill-item" contenteditable="false">Skill 5</li>
+                <li class="skill-item" contenteditable="false">Skill 6</li>
+                <li class="skill-item" contenteditable="false">Skill 7</li>
+                <li class="skill-item" contenteditable="false">Skill 8</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Print functionality
+        document.getElementById('printBtn').addEventListener('click', function() {
+            window.print();
+        });
+
+        // Edit mode toggle
+        document.getElementById('editToggle').addEventListener('click', function() {
+            const editableElements = document.querySelectorAll('[contenteditable]');
+            editableElements.forEach(element => {
+                if (element.getAttribute('contenteditable') === 'false') {
+                    element.setAttribute('contenteditable', 'true');
+                } else {
+                    element.setAttribute('contenteditable', 'false');
+                }
+            });
+
+            // Update button text
+            const isEditable = document.querySelector('[contenteditable="true"]') !== null;
+            this.textContent = isEditable ? 'Save Changes' : 'Toggle Edit Mode';
+        });
+
+        // Theme selector functionality
+        const themeButtons = document.querySelectorAll('.theme-btn');
+        const resumeContainer = document.getElementById('resumeContainer');
+
+        themeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                themeButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                this.classList.add('active');
+
+                // Remove all theme classes
+                resumeContainer.classList.remove('themed', 'blue-theme', 'green-theme', 'purple-theme');
+
+                // Add appropriate theme class
+                if (this.id === 'blueTheme') {
+                    resumeContainer.classList.add('themed', 'blue-theme');
+                } else if (this.id === 'greenTheme') {
+                    resumeContainer.classList.add('themed', 'green-theme');
+                } else if (this.id === 'purpleTheme') {
+                    resumeContainer.classList.add('themed', 'purple-theme');
+                }
+                // Default theme has no additional classes
+            });
+        });
+
+        // Set default theme as active
+        document.getElementById('defaultTheme').classList.add('active');
+    </script>
+</body>
+</html>
